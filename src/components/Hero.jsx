@@ -77,9 +77,7 @@ export default function Hero() {
           <span className={`${blink ? 'opacity-100' : 'opacity-0'} text-accent ml-1`}>|</span>
         </div>
 
-        <p className="text-xl md:text-2xl text-text-body mb-10 max-w-2xl mx-auto leading-relaxed mt-4">
-          Convergindo Geografia, Desenvolvimento de Software e Inteligência Artificial para soluções espaciais do futuro.
-        </p>
+
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
           <a 
