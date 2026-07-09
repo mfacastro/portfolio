@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&family=Space+Grotesk:wght@700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1A0A33;
+  --color-secondary: #270066;
+  --color-text-main: #E0CCFF;
+  --color-text-body: #C099FF;
+  --color-accent: #8152CC;
+
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-primary text-text-body antialiased font-sans;
+    line-height: 1.6;
+  }
+}
+
+/* Custom scrollbar for better look */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-primary;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-secondary border border-accent/30 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-accent/80;
+}
