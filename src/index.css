@@ -1,39 +1,77 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&family=Space+Grotesk:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #1A0A33;
-  --color-secondary: #270066;
-  --color-text-main: #E0CCFF;
-  --color-text-body: #C099FF;
-  --color-accent: #8152CC;
+  /* Paleta "Atlas Noturno" — tinta profunda, dourado cartográfico e água */
+  --color-ink: #0A1114;
+  --color-surface: #0E181D;
+  --color-raised: #13232A;
+  --color-line: #1E3138;
 
-  --font-sans: 'Inter', sans-serif;
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --color-gold: #D9AC5B;
+  --color-gold-soft: #EBCE96;
+  --color-aqua: #7FC6BF;
+
+  --color-paper: #EDE7DA;
+  --color-mist: #9FB0B0;
+
+  --font-sans: 'Archivo', sans-serif;
+  --font-display: 'Fraunces', serif;
+  --font-mono: 'IBM Plex Mono', monospace;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
   }
-  
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   body {
-    @apply bg-primary text-text-body antialiased font-sans;
-    line-height: 1.6;
+    @apply bg-ink text-mist antialiased font-sans;
+    line-height: 1.7;
+  }
+
+  section[id] {
+    scroll-margin-top: 4.5rem;
+  }
+
+  ::selection {
+    background: rgba(217, 172, 91, 0.35);
+    color: #EDE7DA;
   }
 }
 
-/* Custom scrollbar for better look */
+@utility graticule {
+  /* Grade de coordenadas sutil, como um graticulado de mapa */
+  background-image:
+    linear-gradient(to right, rgba(237, 231, 218, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(237, 231, 218, 0.045) 1px, transparent 1px);
+  background-size: 76px 76px;
+}
+
+@utility topo-lines {
+  /* Curvas de nível decorativas */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='700' viewBox='0 0 700 700' fill='none'%3E%3Cg stroke='%23EDE7DA' stroke-opacity='0.05' stroke-width='1'%3E%3Cpath d='M120 350c0-130 100-230 230-230s230 100 230 230-100 230-230 230-230-100-230-230Z'/%3E%3Cpath d='M170 350c0-100 80-180 180-180s180 80 180 180-80 180-180 180-180-80-180-180Z'/%3E%3Cpath d='M220 350c0-72 58-130 130-130s130 58 130 130-58 130-130 130-130-58-130-130Z'/%3E%3Cpath d='M270 350c0-44 36-80 80-80s80 36 80 80-36 80-80 80-80-36-80-80Z'/%3E%3Cpath d='M20 80c90 30 160-40 260-10s150 90 250 60 130-80 150-60'/%3E%3Cpath d='M0 640c110-40 190 30 300 0s170-100 270-70 110 60 130 50'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 700px 700px;
+}
+
+/* Barra de rolagem customizada */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 ::-webkit-scrollbar-track {
-  @apply bg-primary;
+  background: #0A1114;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-secondary border border-accent/30 rounded-full;
+  background: #1E3138;
+  border-radius: 999px;
+  border: 2px solid #0A1114;
 }
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-accent/80;
+  background: #D9AC5B;
 }

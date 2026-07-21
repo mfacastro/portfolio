@@ -1,133 +1,127 @@
 import { motion } from 'framer-motion';
-import { Mail, MapPin, Phone, Send } from 'lucide-react';
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import { Mail, MapPin, Phone } from 'lucide-react';
+import { FaGithub, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
+
+const contactItems = [
+  {
+    icon: Mail,
+    title: 'E-mail',
+    content: (
+      <a href="mailto:mfacastro@gmail.com" className="text-mist hover:text-gold transition-colors break-all">
+        mfacastro@gmail.com
+      </a>
+    ),
+  },
+  {
+    icon: Phone,
+    title: 'Telefone / WhatsApp',
+    content: (
+      <a href="https://wa.me/5561986538541" className="text-mist hover:text-gold transition-colors">
+        +55 (61) 98653-8541
+      </a>
+    ),
+  },
+  {
+    icon: MapPin,
+    title: 'Localização',
+    content: <p className="text-mist">Brasília - DF, Brasil</p>,
+  },
+];
 
 export default function Contact() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer id="contato" className="bg-secondary pt-32 pb-12 relative overflow-hidden">
-      {/* Decorative background element */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-text-main/5 rounded-full mix-blend-screen filter blur-3xl pointer-events-none"></div>
+    <footer id="contato" className="bg-surface pt-32 pb-12 relative overflow-hidden">
+      {/* Curvas de nível e brilho decorativo */}
+      <div className="absolute inset-0 topo-lines opacity-50 pointer-events-none" aria-hidden="true"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-gold/5 rounded-full mix-blend-screen filter blur-3xl pointer-events-none" aria-hidden="true"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 mb-24">
-          
-          {/* Left Column - Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+
+        {/* Cabeçalho e chamada para ação */}
+        <motion.div
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.7, ease: 'easeOut' }}
+          className="text-center max-w-2xl mx-auto mb-16"
+        >
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <span className="font-mono text-xs text-gold tracking-[0.3em]">05</span>
+            <span className="h-px w-10 bg-gold/40" aria-hidden="true"></span>
+            <span className="font-mono text-xs text-mist tracking-[0.3em] uppercase">Contato</span>
+          </div>
+
+          <h2 className="font-display text-4xl md:text-5xl font-medium text-paper mb-8 tracking-tight">
+            Vamos <span className="italic text-gold-soft">conversar?</span>
+          </h2>
+
+          <p className="text-lg text-mist mb-10 leading-relaxed">
+            Estou sempre aberto a discutir novos projetos, ideias criativas ou oportunidades para fazer parte da sua visão.
+          </p>
+
+          <a
+            href="https://wa.me/5561986538541"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gold text-ink rounded-md font-semibold text-base tracking-wide hover:bg-gold-soft hover:shadow-[0_0_28px_rgba(217,172,91,0.35)] transition-all duration-300"
           >
-            <h2 className="text-4xl md:text-5xl font-bold font-display text-text-main mb-6">
-              Vamos conversar?
-            </h2>
-            <div className="w-20 h-1 bg-accent mb-8"></div>
-            
-            <p className="text-lg text-text-body mb-12 leading-relaxed max-w-lg">
-              Estou sempre aberto a discutir novos projetos, ideias criativas ou oportunidades para fazer parte da sua visão.
-            </p>
+            Falar no WhatsApp
+            <FaWhatsapp className="w-5 h-5" />
+          </a>
+        </motion.div>
 
-            <div className="space-y-8">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-primary border border-accent/20 flex items-center justify-center shrink-0">
-                  <Mail className="w-5 h-5 text-accent" />
-                </div>
-                <div>
-                  <h4 className="text-text-main font-semibold mb-1">E-mail</h4>
-                  <a href="mailto:mfacastro@gmail.com" className="text-text-body hover:text-accent transition-colors">
-                    mfacastro@gmail.com
-                  </a>
-                </div>
+        {/* Cartões de contato */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto mb-24">
+          {contactItems.map(({ icon: Icon, title, content }, i) => (
+            <motion.div
+              key={title}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.6, delay: i * 0.1, ease: 'easeOut' }}
+              className="bg-ink border border-line rounded-xl p-6 text-center flex flex-col items-center hover:border-gold/50 transition-colors duration-300 group"
+            >
+              <div className="w-12 h-12 rounded-md bg-surface border border-line flex items-center justify-center mb-4 group-hover:border-gold/50 transition-colors duration-300">
+                <Icon className="w-5 h-5 text-gold" />
               </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-primary border border-accent/20 flex items-center justify-center shrink-0">
-                  <Phone className="w-5 h-5 text-accent" />
-                </div>
-                <div>
-                  <h4 className="text-text-main font-semibold mb-1">Telefone / WhatsApp</h4>
-                  <a href="https://wa.me/5561986538541" className="text-text-body hover:text-accent transition-colors">
-                    +55 (61) 98653-8541
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-primary border border-accent/20 flex items-center justify-center shrink-0">
-                  <MapPin className="w-5 h-5 text-accent" />
-                </div>
-                <div>
-                  <h4 className="text-text-main font-semibold mb-1">Localização</h4>
-                  <p className="text-text-body">Brasília - DF, Brasil</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Right Column - Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <form className="bg-primary p-8 md:p-10 rounded-3xl border border-accent/20 shadow-2xl space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-text-main mb-2">Seu Nome</label>
-                <input 
-                  type="text" 
-                  id="name" 
-                  className="w-full bg-secondary border border-accent/20 rounded-xl px-4 py-3 text-text-main focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300"
-                  placeholder="Como gostaria de ser chamado"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-text-main mb-2">Seu E-mail</label>
-                <input 
-                  type="email" 
-                  id="email" 
-                  className="w-full bg-secondary border border-accent/20 rounded-xl px-4 py-3 text-text-main focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300"
-                  placeholder="Para que eu possa retornar"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-text-main mb-2">Mensagem</label>
-                <textarea 
-                  id="message" 
-                  rows={4}
-                  className="w-full bg-secondary border border-accent/20 rounded-xl px-4 py-3 text-text-main focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all duration-300 resize-none"
-                  placeholder="Me conte um pouco sobre o projeto..."
-                ></textarea>
-              </div>
-              
-              <button 
-                type="submit"
-                className="w-full py-4 bg-accent text-text-main rounded-xl font-bold text-lg hover:brightness-110 transition-all duration-300 flex items-center justify-center gap-2 mt-4"
-              >
-                Enviar Mensagem
-                <Send className="w-5 h-5" />
-              </button>
-            </form>
-          </motion.div>
+              <h4 className="text-paper font-semibold mb-1">{title}</h4>
+              {content}
+            </motion.div>
+          ))}
         </div>
 
-        {/* Footer Bottom */}
-        <div className="pt-8 border-t border-accent/20 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-text-body text-sm">
+        {/* Rodapé */}
+        <div className="pt-8 border-t border-line flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-mist text-sm">
             © {currentYear} Manoel Castro. Todos os direitos reservados.
           </p>
-          
-          <div className="flex gap-4">
-            <a href="https://github.com/mfacastro" className="w-10 h-10 rounded-full bg-primary border border-accent/30 flex items-center justify-center text-text-body hover:text-text-main hover:border-text-main hover:bg-accent/20 transition-colors">
-              <FaGithub className="w-5 h-5" />
-            </a>
-            <a href="https://www.linkedin.com/in/mfacastro/" className="w-10 h-10 rounded-full bg-primary border border-accent/30 flex items-center justify-center text-text-body hover:text-text-main hover:border-text-main hover:bg-accent/20 transition-colors">
-              <FaLinkedin className="w-5 h-5" />
-            </a>
+
+          <div className="flex items-center gap-6">
+            <span className="hidden md:inline font-mono text-[10px] text-mist/50 tracking-[0.25em]">
+              15°47'S · 47°52'W
+            </span>
+            <div className="flex gap-3">
+              <a
+                href="https://github.com/mfacastro"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub"
+                className="w-10 h-10 rounded-md bg-ink border border-line flex items-center justify-center text-mist hover:text-gold hover:border-gold/60 transition-colors"
+              >
+                <FaGithub className="w-5 h-5" />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/mfacastro/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="w-10 h-10 rounded-md bg-ink border border-line flex items-center justify-center text-mist hover:text-gold hover:border-gold/60 transition-colors"
+              >
+                <FaLinkedin className="w-5 h-5" />
+              </a>
+            </div>
           </div>
         </div>
       </div>

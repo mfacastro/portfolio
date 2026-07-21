@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import SectionHeading from './SectionHeading';
 
 // Imagens dos mapas
 import Mapa1 from '../../Imagens/Mapas/Barragens Brasileiras em Categoria de Risco Alto.png';
@@ -70,14 +71,23 @@ export default function Portfolio() {
   const [selectedMap, setSelectedMap] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const filteredMaps = activeCategory === "Todos" 
-    ? mapsData 
+  const filteredMaps = activeCategory === "Todos"
+    ? mapsData
     : mapsData.filter(m => m.category === activeCategory);
 
-  // Reset index when filter changes
+  // Reinicia o índice ao trocar de filtro
   useEffect(() => {
     setCurrentIndex(0);
   }, [activeCategory]);
+
+  // Fecha o lightbox com Esc
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === 'Escape') setSelectedMap(null);
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, []);
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % filteredMaps.length);
@@ -88,55 +98,55 @@ export default function Portfolio() {
   };
 
   return (
-    <section id="portfolio" className="bg-primary min-h-screen pt-24 pb-12 flex flex-col justify-center relative">
-      {/* Container de Filtros */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 z-20 relative">
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
+    <section id="portfolio" className="bg-ink min-h-screen pt-28 pb-16 flex flex-col justify-center relative graticule">
+      {/* Filtros e cabeçalho */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 z-20 relative w-full">
+        <SectionHeading
+          index="04"
+          label="Acervo"
+          title="Produtos Cartográficos"
+        />
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center"
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="flex flex-wrap justify-center gap-3 -mt-8"
         >
-          <h2 className="text-4xl md:text-5xl font-bold font-display text-text-main mb-6">
-            Produtos Cartográficos
-          </h2>
-          <div className="w-20 h-1 bg-accent mx-auto mb-10"></div>
-          
-          {/* Filters */}
-          <div className="flex flex-wrap justify-center gap-3 md:gap-4">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border ${
-                  activeCategory === cat
-                    ? "bg-accent border-accent text-text-main shadow-[0_0_15px_rgba(129,82,204,0.4)]"
-                    : "bg-transparent border-accent/30 text-text-body hover:border-text-main hover:text-text-main"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-5 py-2 rounded-md font-mono text-xs tracking-[0.15em] uppercase transition-all duration-300 border ${
+                activeCategory === cat
+                  ? "bg-gold border-gold text-ink font-medium shadow-[0_0_18px_rgba(217,172,91,0.35)]"
+                  : "bg-transparent border-line text-mist hover:border-gold/50 hover:text-paper"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
         </motion.div>
       </div>
 
-      {/* Infinite Carousel */}
-      <div className="relative w-full h-[50vh] md:h-[65vh] flex items-center justify-center overflow-hidden my-8">
-        
-        {/* Navigation Arrows */}
+      {/* Carrossel */}
+      <div className="relative w-full h-[50vh] md:h-[62vh] flex items-center justify-center overflow-hidden my-8">
+
+        {/* Setas de navegação */}
         {filteredMaps.length > 1 && (
           <>
-            <button 
+            <button
               onClick={handlePrev}
-              className="absolute left-4 md:left-12 z-40 w-12 h-12 rounded-full bg-primary/80 border border-accent/40 flex items-center justify-center text-text-main hover:bg-accent hover:border-text-main transition-all duration-300 shadow-xl"
+              aria-label="Mapa anterior"
+              className="absolute left-4 md:left-12 z-40 w-12 h-12 rounded-md bg-ink/80 backdrop-blur border border-line flex items-center justify-center text-paper hover:bg-gold hover:text-ink hover:border-gold transition-all duration-300 shadow-xl"
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
-            <button 
+            <button
               onClick={handleNext}
-              className="absolute right-4 md:right-12 z-40 w-12 h-12 rounded-full bg-primary/80 border border-accent/40 flex items-center justify-center text-text-main hover:bg-accent hover:border-text-main transition-all duration-300 shadow-xl"
+              aria-label="Próximo mapa"
+              className="absolute right-4 md:right-12 z-40 w-12 h-12 rounded-md bg-ink/80 backdrop-blur border border-line flex items-center justify-center text-paper hover:bg-gold hover:text-ink hover:border-gold transition-all duration-300 shadow-xl"
             >
               <ChevronRight className="w-6 h-6" />
             </button>
@@ -145,23 +155,23 @@ export default function Portfolio() {
 
         {filteredMaps.map((mapData, index) => {
           let relativeIndex = index - currentIndex;
-          
-          // Fix logic for wrap around
+
+          // Ajuste para navegação circular
           if (relativeIndex > filteredMaps.length / 2) {
-             relativeIndex -= filteredMaps.length;
+            relativeIndex -= filteredMaps.length;
           } else if (relativeIndex < -filteredMaps.length / 2) {
-             relativeIndex += filteredMaps.length;
+            relativeIndex += filteredMaps.length;
           }
-          
-          // In case of only 2 items, avoid weird behavior
+
+          // Com apenas 2 itens, força o vizinho para a direita
           if (filteredMaps.length === 2 && index !== currentIndex) {
-            relativeIndex = 1; // Always force to the right just to be predictable
+            relativeIndex = 1;
           }
 
           const isCenter = relativeIndex === 0;
-          const isLeft = relativeIndex === -1 || (filteredMaps.length === 2 && relativeIndex === -1); // fallback
+          const isLeft = relativeIndex === -1;
           const isRight = relativeIndex === 1;
-          
+
           const isVisible = Math.abs(relativeIndex) <= 1;
 
           if (!isVisible) return null;
@@ -172,12 +182,12 @@ export default function Portfolio() {
               initial={false}
               animate={{
                 x: isCenter ? "0%" : isLeft ? "-80%" : "80%",
-                scale: isCenter ? 1 : 0.75,
-                opacity: isCenter ? 1 : 0.4,
-                filter: isCenter ? "blur(0px)" : "blur(8px)",
+                scale: isCenter ? 1 : 0.72,
+                opacity: isCenter ? 1 : 0.3,
+                filter: isCenter ? "blur(0px)" : "blur(6px)",
                 zIndex: isCenter ? 30 : 20,
               }}
-              transition={{ duration: 0.6, ease: "easeInOut" }}
+              transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
               className="absolute w-[90%] md:w-[70%] lg:w-[60%] h-full flex items-center justify-center cursor-pointer"
               onClick={() => {
                 if (isLeft) handlePrev();
@@ -185,27 +195,27 @@ export default function Portfolio() {
                 if (isCenter) setSelectedMap(mapData);
               }}
             >
-              <div className="relative h-full max-w-full w-fit flex items-center justify-center group overflow-hidden rounded-xl shadow-2xl">
-                <img 
-                  src={mapData.image} 
+              <div className={`relative h-full max-w-full w-fit flex items-center justify-center group overflow-hidden rounded-lg shadow-2xl border transition-colors duration-500 ${isCenter ? 'border-gold/40' : 'border-line'}`}>
+                <img
+                  src={mapData.image}
                   alt={mapData.title}
-                  className="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-105"
+                  className="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-[1.03]"
                 />
-                
-                {/* Overlay Content - Only shows completely on the center map on hover */}
+
+                {/* Sobreposição com detalhes — apenas no mapa central, ao passar o mouse */}
                 {isCenter && (
-                  <div className="absolute inset-0 bg-secondary/85 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6 md:p-10 z-50">
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/70 to-ink/20 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6 md:p-10 z-50">
                     <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                      <div className="flex justify-between items-start mb-2">
-                        <span className="text-xs font-bold font-mono text-accent tracking-widest uppercase">
+                      <div className="flex justify-between items-start mb-3">
+                        <span className="font-mono text-[11px] font-medium text-gold tracking-[0.25em] uppercase border border-gold/40 px-2.5 py-1 rounded">
                           {mapData.category}
                         </span>
-                        <Search className="w-6 h-6 text-text-main/70 group-hover:text-text-main transition-colors" />
+                        <Search className="w-6 h-6 text-paper/70 group-hover:text-gold transition-colors" />
                       </div>
-                      <h3 className="text-xl md:text-3xl font-display font-bold text-text-main mb-3 line-clamp-2">
+                      <h3 className="font-display text-xl md:text-3xl font-medium text-paper mb-3 line-clamp-2">
                         {mapData.title}
                       </h3>
-                      <p className="text-text-body text-sm md:text-base line-clamp-3 leading-relaxed">
+                      <p className="text-mist text-sm md:text-base line-clamp-3 leading-relaxed">
                         {mapData.description}
                       </p>
                     </div>
@@ -217,47 +227,60 @@ export default function Portfolio() {
         })}
       </div>
 
-      {/* Lightbox Modal */}
+      {/* Contador do carrossel, como numeração de prancha */}
+      <div className="text-center font-mono text-xs text-mist tracking-[0.3em]" aria-live="polite">
+        <span className="text-gold">{String(currentIndex + 1).padStart(2, '0')}</span>
+        <span className="mx-2">/</span>
+        <span>{String(filteredMaps.length).padStart(2, '0')}</span>
+      </div>
+
+      {/* Lightbox */}
       <AnimatePresence>
         {selectedMap && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-primary/98 backdrop-blur-md p-4 md:p-8"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/95 backdrop-blur-md p-4 md:p-8"
             onClick={() => setSelectedMap(null)}
           >
             <motion.div
-              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              initial={{ scale: 0.96, opacity: 0, y: 24 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="bg-secondary border border-accent/30 rounded-3xl overflow-hidden w-full h-[90vh] md:w-[95vw] md:h-[95vh] flex flex-col lg:flex-row relative shadow-2xl"
+              exit={{ scale: 0.96, opacity: 0, y: 24 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+              className="bg-surface border border-line rounded-xl overflow-hidden w-full h-[90vh] md:w-[95vw] md:h-[95vh] flex flex-col lg:flex-row relative shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <button 
-                className="absolute top-4 right-4 z-10 w-12 h-12 bg-primary/80 hover:bg-accent rounded-full flex items-center justify-center text-text-body hover:text-text-main transition-colors"
+              <button
+                aria-label="Fechar"
+                className="absolute top-4 right-4 z-10 w-11 h-11 bg-ink/80 border border-line hover:bg-gold hover:text-ink hover:border-gold rounded-md flex items-center justify-center text-mist transition-colors"
                 onClick={() => setSelectedMap(null)}
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5" />
               </button>
 
-              <div className="lg:w-2/3 h-[50vh] lg:h-full bg-primary flex items-center justify-center p-4">
-                <img 
-                  src={selectedMap.image} 
-                  alt={selectedMap.title} 
-                  className="max-w-full max-h-full object-contain rounded-xl"
+              <div className="lg:w-2/3 h-[50vh] lg:h-full bg-ink flex items-center justify-center p-4 graticule">
+                <img
+                  src={selectedMap.image}
+                  alt={selectedMap.title}
+                  className="max-w-full max-h-full object-contain rounded-md shadow-2xl"
                 />
               </div>
-              
-              <div className="lg:w-1/3 p-8 lg:p-12 overflow-y-auto custom-scrollbar flex flex-col justify-center">
-                <span className="inline-block px-4 py-2 bg-primary text-text-main border border-accent/20 text-xs font-mono font-bold tracking-widest uppercase rounded-full mb-6 self-start">
+
+              <div className="lg:w-1/3 p-8 lg:p-12 overflow-y-auto flex flex-col justify-center relative">
+                <span className="absolute top-6 left-8 lg:left-12 font-mono text-[10px] text-mist/50 tracking-[0.3em] uppercase">
+                  Prancha {String(selectedMap.id).padStart(2, '0')}
+                </span>
+
+                <span className="inline-block px-3 py-1.5 border border-gold/40 bg-gold/5 text-gold font-mono text-[11px] font-medium tracking-[0.25em] uppercase rounded mb-6 self-start">
                   {selectedMap.category}
                 </span>
-                <h3 className="text-3xl lg:text-4xl font-bold font-display text-text-main mb-8 leading-tight">
+                <h3 className="font-display text-3xl lg:text-4xl font-medium text-paper mb-6 leading-tight tracking-tight">
                   {selectedMap.title}
                 </h3>
-                <div className="w-16 h-1 bg-accent mb-8"></div>
-                <p className="text-text-body leading-relaxed text-lg">
+                <div className="w-14 h-px bg-gold mb-8" aria-hidden="true"></div>
+                <p className="text-mist leading-relaxed text-base lg:text-lg">
                   {selectedMap.description}
                 </p>
               </div>

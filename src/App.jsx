@@ -8,7 +8,7 @@ import Resume from './components/Resume';
 
 function App() {
   return (
-    <main className="bg-primary min-h-screen selection:bg-accent/40 selection:text-text-main relative font-sans">
+    <main className="bg-ink min-h-screen relative font-sans">
       <Navbar />
       <Hero />
       <About />
